@@ -1,0 +1,7 @@
+qfmathex.c:14:7:qFMathEx_Normalize	1
+qfmathex.c:21:7:qFMathEx_MapMinMax	1
+qfmathex.c:30:6:qFMathEx_InRangeCoerce	4
+qfmathex.c:54:6:qFMathEx_AlmostEqual	2
+qfmathex.c:61:6:qFMathEx_Equal	1
+qfmathex.c:67:6:qFMathEx_InPolygon	11
+qfmathex.c:102:6:qFMathEx_isInsideCircle	2

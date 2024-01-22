@@ -1,0 +1,7 @@
+../Core/Src/qfmathex.c:14:7:qFMathEx_Normalize	32	static
+../Core/Src/qfmathex.c:21:7:qFMathEx_MapMinMax	32	static
+../Core/Src/qfmathex.c:30:6:qFMathEx_InRangeCoerce	32	static
+../Core/Src/qfmathex.c:54:6:qFMathEx_AlmostEqual	32	static
+../Core/Src/qfmathex.c:61:6:qFMathEx_Equal	16	static
+../Core/Src/qfmathex.c:67:6:qFMathEx_InPolygon	72	static
+../Core/Src/qfmathex.c:102:6:qFMathEx_isInsideCircle	40	static

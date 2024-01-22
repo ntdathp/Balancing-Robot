@@ -1,0 +1,6 @@
+motor.c:14:6:MotorReset	1
+motor.c:29:6:MotorSetDuty1	4
+motor.c:46:6:MotorSetDuty2	4
+motor.c:64:6:ReadEncoder	1
+motor.c:89:7:MotorTuningVelocity	1
+motor.c:96:7:MotorTuningPosition	1
