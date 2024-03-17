@@ -25,13 +25,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h \
  ../Core/Inc/i2c.h ../Core/Inc/main.h ../Core/Inc/tim.h \
- ../Core/Inc/usart.h ../Core/Inc/usb.h ../Core/Inc/gpio.h \
- ../Core/Inc/mpu6050.h ../Core/Inc/i2c.h ../Core/Inc/motor.h \
- ../Core/Inc/pid.h ../Core/Inc/tim.h ../Core/Inc/Balance_fis.h
+ ../Core/Inc/usart.h ../Core/Inc/gpio.h ../Core/Inc/mpu6050.h \
+ ../Core/Inc/i2c.h ../Core/Inc/motor.h ../Core/Inc/pid.h \
+ ../Core/Inc/tim.h ../Core/Inc/Balance_fis.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 ../Core/Inc/stm32f1xx_hal_conf.h:
@@ -59,14 +56,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd.h:
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_usb.h:
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h:
 ../Core/Inc/i2c.h:
 ../Core/Inc/main.h:
 ../Core/Inc/tim.h:
 ../Core/Inc/usart.h:
-../Core/Inc/usb.h:
 ../Core/Inc/gpio.h:
 ../Core/Inc/mpu6050.h:
 ../Core/Inc/i2c.h:

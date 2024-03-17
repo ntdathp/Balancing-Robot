@@ -21,7 +21,6 @@
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
-#include "usb.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -140,8 +139,7 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM1_Init();
   MX_TIM4_Init();
-  MX_USART3_UART_Init();
-  MX_USB_PCD_Init();
+  MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim2);
 
@@ -150,10 +148,9 @@ int main(void)
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
 
-  HAL_UART_Receive_IT(&huart2,(uint8_t*)buff, 1);
-  HAL_UART_Transmit(&huart3, (uint8_t *)result, sizeof(result), 100);
 
-  MPU6050_Init(&hi2c1);
+
+  while(MPU6050_Init(&hi2c2) == 1);
 
   Balance_init();
 
@@ -184,7 +181,6 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -214,46 +210,10 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB;
-  PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
-    Error_Handler();
-  }
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
 
-	    if(huart ->Instance == huart2.Instance)
-	    {
-
-
-	    	if(buff[0] == 'R')
-	    		{
-	    			current = R;
-	    		}
-	    	else if(buff[0] == 'L')
-	    		{
-	    			current = L;
-	    		}
-	    	else if(buff[0] == 'F')
-	    		{
-	    			current = F;
-	    		}
-	    	else if(buff[0] == 'D')
-	    		{
-	    		    current = D;
-	    		}
-	    	else if (buff[0] == 'C')
-	    	{
-	    		current = CF;
-	    	}
-	    	}
-	    HAL_UART_Receive_IT(&huart2,(uint8_t*)buff, 1);
-
-}
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
@@ -261,40 +221,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  if(htim->Instance == htim2.Instance)
 	  {
 
-		  double dt = (double)(HAL_GetTick() - tim) / 1000;
-		  tim = HAL_GetTick();
 
-		  MPU6050_Read_All(&hi2c1, &MPU);
-
-		  switch(current){
-
-		  case Kalman:
-			  MPU.KalmanAngleY += 1.12;
-
-			  Balance.pitch_dot = (MPU.KalmanAngleY - Balance.pitch) / dt ;
-
-
-			  Balance.input[0] = MPU.KalmanAngleY *  K_pitch;
-			  Balance.input[1] = Balance.pitch_dot * K_pitch_dot;
-
-			  Balance.pitch = MPU.KalmanAngleY;
-
-			  Balance_run(Balance.input, &Balance.output);
-
-			  if(Balance.input[0] < -10 || Balance.input[0] > 10)
-				  	  {
-					  	  Balance.output = 0;
-				  	  }
-
-
-			  MotorSetDuty1(Balance.output * K_u);
-			  MotorSetDuty2(Balance.output * K_u);
-			  break;
-
-		  case CF:
+		      MPU6050_Read_All(&hi2c2, &MPU);
 
 			  Balance.pitch_dot = MPU.Gy;
-
 			  Balance.input[0] = MPU.CFAngleY *  K_pitch;
 			  Balance.input[1] = Balance.pitch_dot * K_pitch_dot;
 
@@ -307,133 +237,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 					  	  Balance.output = 0;
 				  	  }
 
-
 			  MotorSetDuty1(Balance.output * K_u);
 			  MotorSetDuty2(Balance.output * K_u);
 
-
-			    double real[3] = {Balance.input[0], Balance.input[1], Balance.output};
-
-			    strcpy(result, "=");
-			    for (int i = 0; i < 3; i++) {
-			          char buffer[20];
-			          snprintf(buffer, sizeof(buffer), "%.2f", creal(real[i]));
-			          strcat(result, buffer);
-
-			          if (i < 2) {
-			              strcat(result, ",");
-			          }
-			      }
-			    strcat(result, "!");
-			    HAL_UART_Transmit(&huart3, (uint8_t *)result, sizeof(result), 100);
-
-			   break;
-		   case R:
-			              Balance.pitch_dot = MPU.Gy + 2;
-
-			 			  Balance.input[0] = MPU.CFAngleY *  K_pitch;
-			 			  Balance.input[1] = Balance.pitch_dot * K_pitch_dot;
-
-			 			  Balance.pitch = MPU.CFAngleY;
-
-			 			  Balance_run(Balance.input, &Balance.output);
-
-			 			  if(Balance.input[0] < -10 || Balance.input[0] > 10)
-			 				  	  {
-			 					  	  Balance.output = 0;
-			 				  	  }
-
-
-			 			  MotorSetDuty1(Balance.output * K_u - 1000);
-			 			  MotorSetDuty2(Balance.output * K_u);
-
-				  if(Balance.input[0] < -0.75 || Balance.input[0] > 0.75)
-					  	  {
-						  	  current = CF;
-					  	  }
-
-
-			   break;
-		   case L:
-			                          Balance.pitch_dot = MPU.Gy + 2;
-
-			  			 			  Balance.input[0] = MPU.CFAngleY *  K_pitch;
-			  			 			  Balance.input[1] = Balance.pitch_dot * K_pitch_dot;
-
-			  			 			  Balance.pitch = MPU.CFAngleY;
-
-			  			 			  Balance_run(Balance.input, &Balance.output);
-
-			  			 			  if(Balance.input[0] < -10 || Balance.input[0] > 10)
-			  			 				  	  {
-			  			 					  	  Balance.output = 0;
-			  			 				  	  }
-
-
-			  			 			  MotorSetDuty1(Balance.output * K_u );
-			  			 			  MotorSetDuty2(Balance.output * K_u - 1000);
-				  if(Balance.input[0] < -0.75 || Balance.input[0] > 0.75)
-					  	  {
-						  	  current = CF;
-					  	  }
-
-
-			   break;
-		   case F:
-			                                      Balance.pitch_dot = MPU.Gy + 2;
-
-			   			  			 			  Balance.input[0] = MPU.CFAngleY *  K_pitch;
-			   			  			 			  Balance.input[1] = Balance.pitch_dot * K_pitch_dot;
-
-			   			  			 			  Balance.pitch = MPU.CFAngleY;
-
-			   			  			 			  Balance_run(Balance.input, &Balance.output);
-
-			   			  			 			  if(Balance.input[0] < -10 || Balance.input[0] > 10)
-			   			  			 				  	  {
-			   			  			 					  	  Balance.output = 0;
-			   			  			 				  	  }
-
-
-			   			  			 			  MotorSetDuty1(Balance.output * K_u );
-			   			  			 			  MotorSetDuty2(Balance.output * K_u);
-				  if(Balance.input[0] < -0.75 || Balance.input[0] > 0.75)
-					  	  {
-						  	  current = CF;
-					  	  }
-
-
-			   break;
-		   case D:
-			   Balance.pitch_dot = MPU.Gy - 2;
-
-			 			   			  			 			  Balance.input[0] = MPU.CFAngleY *  K_pitch;
-			 			   			  			 			  Balance.input[1] = Balance.pitch_dot * K_pitch_dot;
-
-			 			   			  			 			  Balance.pitch = MPU.CFAngleY;
-
-			 			   			  			 			  Balance_run(Balance.input, &Balance.output);
-
-			 			   			  			 			  if(Balance.input[0] < -10 || Balance.input[0] > 10)
-			 			   			  			 				  	  {
-			 			   			  			 					  	  Balance.output = 0;
-			 			   			  			 				  	  }
-
-
-			 			   			  			 			  MotorSetDuty1(Balance.output * K_u );
-			 			   			  			 			  MotorSetDuty2(Balance.output * K_u);
-				  if(Balance.input[0] < -0.75 || Balance.input[0] > 0.75)
-					  	  {
-						  	  current = CF;
-					  	  }
-
-
-			   break;
-
-		  }
-
-		  		  current = CF;
-	  }
+}
 }
 
 

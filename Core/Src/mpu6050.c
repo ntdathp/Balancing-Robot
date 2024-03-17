@@ -196,7 +196,7 @@ void MPU6050_Read_All(I2C_HandleTypeDef *I2Cx, MPU6050_t *DataStruct)
     if ((pitch < -90 && DataStruct->KalmanAngleY > 90) || (pitch > 90 && DataStruct->KalmanAngleY < -90))
     {
         KalmanY.angle = pitch;
-        DataStruct->KalmanAngleY = pitch;
+        //DataStruct->KalmanAngleY = pitch;
         DataStruct->CFAngleY = pitch;
     }
     else
@@ -208,7 +208,7 @@ void MPU6050_Read_All(I2C_HandleTypeDef *I2Cx, MPU6050_t *DataStruct)
     {
         DataStruct->Gx = -DataStruct->Gx;
     }
-    	DataStruct->KalmanAngleX = Kalman_getAngle(&KalmanX, roll, DataStruct->Gx, dt);
+    	//DataStruct->KalmanAngleX = Kalman_getAngle(&KalmanX, roll, DataStruct->Gx, dt);
     	DataStruct->CFAngleX = 0.98 * ( DataStruct->CFAngleX + DataStruct->Gx * dt ) +0.02 * roll;
 
 }
