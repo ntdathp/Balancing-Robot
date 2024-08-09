@@ -1,7 +1,7 @@
 # Balancing-Robot
 Design a two-wheeled self-balancing robot with DC motor from scratch with Fuzzy logic controller, using a complementary filter to determine the tilt angle of the robot with an IMU.
 
-![Robot](img/Robot.png)
+![Robot](img/Robot.jpg)
 
 # Fuzzy logic controller implement
 The robot system has two input variables: tilt angle and tilt rate, with the output being the motor rotation speed.
@@ -11,7 +11,7 @@ The robot system has two input variables: tilt angle and tilt rate, with the out
 
 Based on that, I designed fuzzy control rules for the robot system:
 
-![example](ing/example.png)
+![example](img/example.png)
 
 Linguistic values of input and output variables:
 
@@ -29,5 +29,5 @@ The complementary filter combines signals from the accelerometer and gyroscope b
 
 Self-designed microcontroller board with STM32F103 read data from MPU6050 and control two DC motors with PWM signal through H Bridge, BLE HC-08 and ESP8266 for wireless control or tunning the robot:
 
-![board](img/Board.png)
+![board](img/Board.jgb)
 
