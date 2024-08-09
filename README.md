@@ -29,5 +29,5 @@ The complementary filter combines signals from the accelerometer and gyroscope b
 
 Self-designed microcontroller board with STM32F103 read data from MPU6050 and control two DC motors with PWM signal through H Bridge, BLE HC-08 and ESP8266 for wireless control or tunning the robot:
 
-![board](img/Board.jgb)
+![board](img/Board.jpg)
 
