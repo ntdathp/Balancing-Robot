@@ -6,6 +6,8 @@ Design a two-wheeled self-balancing robot with DC motor from scratch with Fuzzy 
 # Fuzzy logic controller implement
 The robot system has two input variables: tilt angle and tilt rate, with the output being the motor rotation speed.
 
+[![Video](https://img.youtube.com/vi/Jl8DAnknC88/0.jpg)](https://www.youtube.com/shorts/Jl8DAnknC88)
+
 ![Robot system](img/Robot_Fuzzy.png)
 
 
