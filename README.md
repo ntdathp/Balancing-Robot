@@ -1,6 +1,6 @@
 # Balancing-Robot
 Design a two-wheeled self-balancing robot with DC motor from scratch with Fuzzy logic controller, using a complementary filter to determine the tilt angle of the robot with an IMU.
-
+Video:
 [![Video](https://img.youtube.com/vi/Jl8DAnknC88/0.jpg)](https://www.youtube.com/shorts/Jl8DAnknC88)
 
 ![Robot](img/Robot.jpg)
